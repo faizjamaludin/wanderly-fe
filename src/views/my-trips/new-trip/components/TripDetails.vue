@@ -1,6 +1,6 @@
 <template>
-  <form>
-    <div class="bg-white rounded-lg flex flex-col w-136 p-4 gap-4">
+  <form class="flex flex-col w-136 gap-2">
+    <div class="bg-white rounded-lg flex flex-col p-4 gap-4">
       <!-- title form -->
       <p class="text-text-primary text-sm">Trip details</p>
       <div class="w-full border bg-text-muted"></div>
@@ -72,17 +72,27 @@
         </span>
       </div>
 
-      <FormField v-slot="{ componentField }" name="destination">
+      <FormField v-slot="{ componentField }" name="notes">
         <FormItem>
           <FormLabel class="text-text-muted text-[12px]">Notes</FormLabel>
-          <Input v-bind="componentField" placeholder="City, Country" />
+          <Textarea
+            v-bind="componentField"
+            placeholder="Type your message here."
+          />
         </FormItem>
       </FormField>
+    </div>
+
+    <div class="flex items-center justify-end gap-2">
+      <Button size="sm">Cancel</Button>
+      <Button size="sm">Next</Button>
     </div>
   </form>
 </template>
 
 <script setup lang="ts">
+import { Button } from "@/components/ui/button";
 import { FormField, FormItem, FormLabel } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
+import { Textarea } from "@/components/ui/textarea";
 </script>
