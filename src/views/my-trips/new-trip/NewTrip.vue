@@ -1,7 +1,7 @@
 <template>
-  <TripDetails />
+  <CollaboratorAccomodation />
 </template>
 
 <script setup lang="ts">
-import TripDetails from "./components/TripDetails.vue";
+import CollaboratorAccomodation from "./components/CollaboratorAccomodation.vue";
 </script>
