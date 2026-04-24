@@ -40,5 +40,4 @@
 <script setup lang="ts">
 import Badge from "@/components/ui/badge/Badge.vue";
 import { Plus } from "lucide-vue-next";
-import { Button } from "@/components/ui/button";
 </script>

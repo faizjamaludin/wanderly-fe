@@ -1,0 +1,23 @@
+services:
+  # Development Service
+  dev:
+    build:
+      context: .
+      target: development
+    ports:
+      - "5173:5173"
+    volumes:
+      - .:/app
+      - /app/node_modules
+    environment:
+      - CHOKIDAR_USEPOLLING=true
+    profiles: ["dev"] # Only starts when requested
+
+  # Production Service (Simulated)
+  prod:
+    build:
+      context: .
+      target: production
+    ports:
+      - "8080:80" # Use a different host port to avoid conflict
+    profiles: ["prod"] # Only starts when requested
