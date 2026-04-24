@@ -1,6 +1,13 @@
 # Docker Guide & Best Practices
 
-This guide explains how to use Docker with this project and discusses the choices made for a lightweight, efficient setup.
+## ⚡ Shortcut Script (Recommended)
+I have created a shortcut script named `./d` to make typing easier. 
+- **Start Dev**: `./d dev`
+- **Start Prod**: `./d prod`
+- **Install Package**: `./d i <name>`
+- **Stop All**: `./d down`
+
+---
 
 ## Quick Start
 
@@ -52,16 +59,36 @@ We enabled `usePolling: true` in the Vite config. Docker volume mounting sometim
 
 ---
 
+## Installing New Packages
+
+You have two ways to add new dependencies correctly:
+
+### Method A: Run inside Docker (Recommended)
+This installs the package directly into the container's specialized environment and updates your `package.json` simultaneously.
+```bash
+docker compose exec dev npm install <package-name>
+```
+
+### Method B: Install on Host and Rebuild
+If you run `npm install` normally on your Mac:
+1. Run `npm install <package-name>` on your terminal.
+2. You **must** rebuild your Docker containers to see the new package:
+```bash
+docker compose --profile dev up --build
+```
+
+> [!TIP]
+> **Method A** is faster because you don't have to restart everything.
+
+---
+
 ## Production Port Best Practices
 
 In a real production environment, you should follow these rules:
 
-1. **Standard Ports (80/443)**: Web applications should be accessible via port `80` (HTTP) or `443` (HTTPS). Users shouldn't have to type `:5173` or `:8080` in their browser.
-2. **Internal vs External Ports**: 
-   - **Internal**: Inside the container, Nginx usually runs on port `80`.
-   - **External**: On your server, you map port `80` to that container.
-3. **Reverse Proxy**: Use a reverse proxy (like Nginx, Traefik, or Caddy) on the host machine to handle SSL/TLS and route traffic to your containers.
-4. **Environment Separation**: Do not use the same host port for dev and prod simultaneously. This is why we now use `5173` for dev and `8080` for prod.
+1. **Standard Ports (80/443)**: Web applications should be accessible via port `80` (HTTP) or `443` (HTTPS).
+2. **Internal vs External Ports**: Inside the container (Nginx) uses port `80`, while the host maps this to `80` or `443`.
+3. **Environment Separation**: Do not use the same host port for dev and prod simultaneously.
 
 ---
 
