@@ -2,6 +2,7 @@ import { defineStore } from "pinia";
 import { computed, ref } from "vue";
 import { authRepository } from "@/repositories";
 import type { User } from "@/types";
+import type { ProfileUpdate } from "@/repositories/types";
 
 export const useAuthStore = defineStore("auth", () => {
   const currentUser = ref<User | null>(null);
@@ -38,6 +39,12 @@ export const useAuthStore = defineStore("auth", () => {
     token.value = null;
   }
 
+  async function updateProfile(patch: Partial<ProfileUpdate>): Promise<void> {
+    if (!currentUser.value) throw new Error("Not authenticated");
+    const updated = await authRepository.updateProfile(currentUser.value.id, patch);
+    currentUser.value = updated;
+  }
+
   return {
     currentUser,
     token,
@@ -47,5 +54,6 @@ export const useAuthStore = defineStore("auth", () => {
     login,
     register,
     logout,
+    updateProfile,
   };
 });

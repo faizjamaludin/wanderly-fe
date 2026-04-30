@@ -5,13 +5,16 @@
       <header
         class="flex sticky top-0 shadow-xs bg-[#FDFDFD] h-fit py-3 md:py-4 shrink-0 items-center justify-between gap-2 px-4 md:px-6 z-10"
       >
-        <div class="flex flex-col leading-5">
-          <p class="text-[15px] text-text-primary">{{ pageTitle }}</p>
-          <p class="text-[12px] text-text-muted">
-            Welcome back{{
-              authStore.currentUser ? `, ${authStore.currentUser.name}` : ""
-            }}
-          </p>
+        <div class="flex items-center gap-2">
+          <SidebarTrigger class="md:hidden text-text-muted" />
+          <div class="flex flex-col leading-5">
+            <p class="text-[15px] text-text-primary">{{ pageTitle }}</p>
+            <p class="text-[12px] text-text-muted">
+              Welcome back{{
+                authStore.currentUser ? `, ${authStore.currentUser.name}` : ""
+              }}
+            </p>
+          </div>
         </div>
         <RouterLink :to="{ name: 'new-trip' }" asChild>
           <Button
@@ -36,7 +39,7 @@ import { computed, onMounted } from "vue";
 import { useRoute } from "vue-router";
 import { Button } from "@/components/ui/button";
 import AppSidebar from "../components/sidebar/components/AppSidebar.vue";
-import { SidebarInset, SidebarProvider } from "../components/ui/sidebar";
+import { SidebarInset, SidebarProvider, SidebarTrigger } from "../components/ui/sidebar";
 import { Plus } from "lucide-vue-next";
 import { useAuthStore } from "@/stores/auth";
 import { useTripsStore } from "@/stores/trips";

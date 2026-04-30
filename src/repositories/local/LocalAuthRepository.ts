@@ -1,5 +1,5 @@
 import type { AuthSession, User } from "@/types";
-import type { AuthRepository } from "../types";
+import type { AuthRepository, ProfileUpdate } from "../types";
 import { readJson, removeKey, uid, writeJson } from "./storage";
 
 interface StoredUser {
@@ -7,6 +7,10 @@ interface StoredUser {
   name: string;
   email: string;
   password: string;
+  avatar?: string;
+  bio?: string;
+  location?: string;
+  phone?: string;
 }
 
 const USERS_KEY = "users";
@@ -21,7 +25,15 @@ function saveUsers(users: StoredUser[]): void {
 }
 
 function toUser(stored: StoredUser): User {
-  return { id: stored.id, name: stored.name, email: stored.email };
+  return {
+    id: stored.id,
+    name: stored.name,
+    email: stored.email,
+    avatar: stored.avatar,
+    bio: stored.bio,
+    location: stored.location,
+    phone: stored.phone,
+  };
 }
 
 export class LocalAuthRepository implements AuthRepository {
@@ -65,5 +77,18 @@ export class LocalAuthRepository implements AuthRepository {
   async currentUser(): Promise<User | null> {
     const session = await this.currentSession();
     return session?.user ?? null;
+  }
+
+  async updateProfile(userId: string, patch: Partial<ProfileUpdate>): Promise<User> {
+    const users = loadUsers();
+    const idx = users.findIndex((u) => u.id === userId);
+    if (idx === -1) throw new Error("User not found");
+    users[idx] = { ...users[idx], ...patch };
+    saveUsers(users);
+    const updated = toUser(users[idx]);
+    // Refresh stored session
+    const session = readJson<AuthSession | null>(SESSION_KEY, null);
+    if (session) writeJson(SESSION_KEY, { ...session, user: updated });
+    return updated;
   }
 }

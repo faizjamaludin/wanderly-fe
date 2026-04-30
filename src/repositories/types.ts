@@ -22,10 +22,13 @@ export interface TripRepository {
   acceptInvite(inviteToken: string, userId: string): Promise<Trip>;
 }
 
+export type ProfileUpdate = Pick<User, "name" | "bio" | "location" | "phone" | "avatar">;
+
 export interface AuthRepository {
   register(name: string, email: string, password: string): Promise<AuthSession>;
   login(email: string, password: string): Promise<AuthSession>;
   logout(): Promise<void>;
   currentSession(): Promise<AuthSession | null>;
   currentUser(): Promise<User | null>;
+  updateProfile(userId: string, patch: Partial<ProfileUpdate>): Promise<User>;
 }
