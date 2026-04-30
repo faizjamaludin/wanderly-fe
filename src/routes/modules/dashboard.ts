@@ -6,5 +6,6 @@ export const dashboardRoutes: RouteRecordRaw[] = [
     path: "/",
     name: "dashboard",
     component: Dashboard,
+    meta: { title: "Dashboard" },
   },
 ];

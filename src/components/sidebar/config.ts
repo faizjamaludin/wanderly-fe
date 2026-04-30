@@ -1,4 +1,10 @@
-import { LayoutGrid, Plane, SlidersHorizontal, Users } from "lucide-vue-next";
+import {
+  LayoutGrid,
+  LogOut,
+  Plane,
+  SlidersHorizontal,
+  Users,
+} from "lucide-vue-next";
 
 export const mainSidebar = [
   {
@@ -16,7 +22,7 @@ export const mainSidebar = [
       },
       {
         title: "Shared with me",
-        url: "",
+        url: "/shared",
         icon: Users,
       },
     ],
@@ -26,8 +32,13 @@ export const mainSidebar = [
     items: [
       {
         title: "Settings",
-        url: "",
+        url: "/settings",
         icon: SlidersHorizontal,
+      },
+      {
+        title: "Log out",
+        url: "/logout",
+        icon: LogOut,
       },
     ],
   },
